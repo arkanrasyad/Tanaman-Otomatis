@@ -12,6 +12,7 @@ body{
   background: url(bg.jpg) no-repeat;
   background-size: cover;
   background-position: center;
+  background-color: #3498db; 
 }
 .wrapper{
   width: 420px;
