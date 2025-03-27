@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tanaman Pintar| Arkann</title>
+  <title>Tanaman Pintar | Arkann</title>
   <link rel="stylesheet" href="styles.css">
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
   <a href="dashboard.html" class="dashboard-btn">Masuk ke Dashboard</a>
   <div class="wrapper">
-    <form action="">
+    <form id="loginForm"> <!-- Tambahkan ID loginForm -->
       <h1>Login</h1>
       <div class="input-box">
         <input type="text" placeholder="Username" required>
@@ -24,11 +24,30 @@
         <label><input type="checkbox">Remember Me</label>
         <a href="#">Forgot Password</a>
       </div>
-      <button type="submit" class="btn">Login</button>
+      <button type="submit" class="btn">Login</button> <!-- Form akan otomatis submit -->
       <div class="register-link">
         <p>Dont have an account? <a href="#">Register</a></p>
       </div>
     </form>
   </div>
+
+  <!-- Tambahkan JavaScript sebelum </body> -->
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", function(event) {
+      event.preventDefault(); // Mencegah reload halaman
+
+      // Ambil nilai input
+      let username = document.querySelector('input[type="text"]').value;
+      let password = document.querySelector('input[type="password"]').value;
+
+      // Cek apakah username dan password diisi
+      if (username && password) {
+        // Redirect ke dashboard.html
+        window.location.href = "dashboard.html";
+      } else {
+        alert("Username dan Password harus diisi!");
+      }
+    });
+  </script>
 </body>
 </html>
