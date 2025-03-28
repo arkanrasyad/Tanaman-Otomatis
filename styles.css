@@ -17,12 +17,13 @@ body {
 /* Style untuk wrapper login */
 .wrapper {
   width: 420px;
-  background: rgba(255, 255, 255, 0.1); /* Semi-transparan */
+  background: rgba(255, 255, 255, 0.2); /* Warna putih transparan */
   border: 2px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(9px);
+  backdrop-filter: blur(15px); /* Blur lebih smooth */
   color: #fff;
   border-radius: 12px;
   padding: 30px 40px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Tambah bayangan */
 }
 
 /* Style untuk navbar di dashboard */
@@ -34,14 +35,26 @@ body {
   justify-content: space-between;
   align-items: center;
   border-radius: 5px;
+  transition: background 0.3s ease-in-out;
 }
 
+/* Hover navbar */
+.navbar:hover {
+  background: rgba(0, 90, 190, 0.9);
+}
+
+/* Tombol Logout */
 .logout-btn {
   color: white;
   text-decoration: none;
   background: red;
-  padding: 8px 15px;
+  padding: 10px 15px;
   border-radius: 5px;
+  transition: background 0.3s ease-in-out;
+}
+
+.logout-btn:hover {
+  background: darkred;
 }
 
 /* Style container di dashboard */
@@ -50,6 +63,7 @@ body {
   text-align: center;
 }
 
+/* Style untuk card */
 .cards {
   display: flex;
   justify-content: center;
@@ -65,6 +79,13 @@ body {
   text-align: center;
   width: 200px;
   color: white;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+/* Efek hover pada card */
+.card:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.2);
 }
 
 .card i {
