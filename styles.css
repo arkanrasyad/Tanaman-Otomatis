@@ -1,40 +1,40 @@
+/* Gaya dasar halaman */
 body {
     font-family: Arial, sans-serif;
     text-align: center;
-    margin-top: 50px;
-    background-color: green;
+    margin: 0;
+    padding: 0;
+    background-color: green; /* Latar belakang hijau */
     color: white;
 }
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 50px;
-    height: 24px;
+
+/* Gaya header */
+h1 {
+    margin-top: 20px;
 }
-.switch input { display: none; }
-.slider {
-    position: absolute;
+
+/* Gaya tombol */
+button {
+    background-color: #ffcc00; /* Kuning cerah */
+    color: black;
+    border: none;
+    padding: 15px 30px;
+    font-size: 16px;
     cursor: pointer;
-    background-color: #ccc;
-    width: 100%;
-    height: 100%;
-    border-radius: 24px;
-    transition: 0.4s;
+    border-radius: 8px;
+    margin: 10px;
+    transition: 0.3s;
 }
-.slider:before {
-    content: "";
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    background-color: white;
-    border-radius: 50%;
-    top: 2px;
-    left: 2px;
-    transition: 0.4s;
+
+button:hover {
+    background-color: #ff9900; /* Warna oranye saat hover */
 }
-input:checked + .slider {
-    background-color: green;
-}
-input:checked + .slider:before {
-    transform: translateX(26px);
+
+/* Container tombol */
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 20px;
 }
