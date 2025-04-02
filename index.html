@@ -1,52 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tanaman Pintar | Arkann</title>
-  <link rel="stylesheet" href="styles.css">
-  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Home - Penyiraman</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="wrapper">
-    <form id="loginForm"> <!-- Tambahkan ID loginForm -->
-      <h1>Login</h1>
-      <div class="input-box">
-        <input type="text" id="username" placeholder="Username" required>
-        <i class='bx bxs-user'></i>
-      </div>
-      <div class="input-box">
-        <input type="password" id="password" placeholder="Password" required>
-        <i class='bx bxs-lock-alt' ></i>
-      </div>
-      <div class="remember-forgot">
-        <label><input type="checkbox">Remember Me</label>
-        <a href="#">Forgot Password</a>
-      </div>
-      <button type="submit" class="btn">Login</button> <!-- Tidak perlu tombol ekstra -->
-      <div class="register-link">
-        <p>Dont have an account? <a href="#">Register</a></p>
-      </div>
-    </form>
-  </div>
-
-  <!-- Tambahkan JavaScript sebelum </body> -->
-  <script>
-    document.getElementById("loginForm").addEventListener("submit", function(event) {
-      event.preventDefault(); // Mencegah reload halaman
-
-      // Ambil nilai input
-      let username = document.getElementById("username").value;
-      let password = document.getElementById("password").value;
-
-      // Cek apakah username dan password diisi
-      if (username && password) {
-        // Redirect ke dashboard.html
-        window.location.href = "dashboard.html";
-      } else {
-        alert("Username dan Password harus diisi!");
-      }
-    });
-  </script>
+    <h2>Kontrol Penyiraman</h2>
+    <label class="switch">
+        <input type="checkbox" id="pumpSwitch" onchange="togglePump()">
+        <span class="slider"></span>
+    </label>
+    <script src="script.js"></script>
 </body>
 </html>
