@@ -1,17 +1,30 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart Home - Penyiraman</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Plant Monitor Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h2>Kontrol Penyiraman</h2>
-    <label class="switch">
-        <input type="checkbox" id="pumpSwitch" onchange="togglePump()">
-        <span class="slider"></span>
-    </label>
+    <header>
+        <h1>Plant Monitor Dashboard</h1>
+    </header>
+    <main>
+        <section id="monitoring">
+            <h2>Plant Conditions</h2>
+            <div id="data-display">
+                <p>Soil Moisture: <span id="moisture">Loading...</span>%</p>
+                <p>Gas Levels: <span id="gas-levels">Loading...</span> ppm</p>
+                <p>Temperature: <span id="temperature">Loading...</span> °C</p>
+            </div>
+        </section>
+        <section id="control">
+            <h2>Control Relay</h2>
+            <button id="relay-on">Turn On Relay</button>
+            <button id="relay-off">Turn Off Relay</button>
+        </section>
+    </main>
     <script src="script.js"></script>
 </body>
 </html>
