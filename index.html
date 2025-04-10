@@ -1,55 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Kontrol LED dari Web</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <title>Kontrol Lampu ESP8266</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding-top: 50px;
+    }
+    button {
+      padding: 15px 30px;
+      font-size: 18px;
+      margin: 10px;
+      cursor: pointer;
+    }
+    .on {
+      background-color: green;
+      color: white;
+    }
+    .off {
+      background-color: red;
+      color: white;
+    }
+  </style>
 </head>
-<body class="bg-gray-100 font-sans leading-normal tracking-normal">
-
-  <div class="container mx-auto px-4 py-8">
-    <h1 class="text-2xl font-bold mb-4">Kontrol LED ESP8266</h1>
-
-    <div class="flex space-x-4">
-      <button onclick="nyalakanLED()" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
-        LED ON
-      </button>
-      <button onclick="matikanLED()" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
-        LED OFF
-      </button>
-    </div>
-
-    <p id="status" class="mt-4 text-gray-700"></p>
-  </div>
+<body>
+  <h1>Kontrol Lampu ESP8266</h1>
+  <button class="on" onclick="kirimPerintah('ON')">Nyalakan</button>
+  <button class="off" onclick="kirimPerintah('OFF')">Matikan</button>
 
   <script>
-    const ipESP = "192.168.166.195"; // IP ESP kamu
+    const ipESP = 'http://192.168.1.42'; // Ganti dengan IP ESP kamu
 
-    function nyalakanLED() {
-      fetch(`http://${ipESP}/led/on`)
-        .then(response => response.text())
-        .then(data => {
-          document.getElementById("status").textContent = "LED DINYALAKAN";
-          console.log("LED ON:", data);
+    function kirimPerintah(perintah) {
+      fetch(`${ipESP}/${perintah}`)
+        .then(response => {
+          if (!response.ok) throw new Error("Gagal mengirim perintah!");
+          return response.text();
         })
-        .catch(err => {
-          document.getElementById("status").textContent = "Gagal nyalakan LED";
-          console.error("Gagal nyalakan LED:", err);
-        });
-    }
-
-    function matikanLED() {
-      fetch(`http://${ipESP}/led/off`)
-        .then(response => response.text())
-        .then(data => {
-          document.getElementById("status").textContent = "LED DIMATIKAN";
-          console.log("LED OFF:", data);
-        })
-        .catch(err => {
-          document.getElementById("status").textContent = "Gagal matikan LED";
-          console.error("Gagal matikan LED:", err);
-        });
+        .then(data => console.log("Respon dari ESP:", data))
+        .catch(err => alert("Gagal kirim perintah: " + err.message));
     }
   </script>
 </body>
