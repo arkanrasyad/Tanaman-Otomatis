@@ -1,41 +1,260 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Kontrol Lampu</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .active {
+            color: #00BFFF !important;
+        }
+        .inactive {
+            color: #FFFFFF !important;
+        }
+        .dark-mode {
+            background-color: #1a202c;
+            color: #ffffff;
+        }
+        .light-mode {
+            background-color: #ffffff;
+            color: #1a202c;
+        }
+        .transition {
+            transition: all 0.3s ease-in-out;
+        }
+        .oval-bg {
+            position: relative;
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 9999px;
+        }
+        .oval-bg span {
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+    <script>
+        function toggleButton(button) {
+            if (button.innerText === "Off") {
+                button.innerText = "On";
+                button.classList.remove("bg-gray-600");
+                button.classList.add("bg-green-500");
+            } else {
+                button.innerText = "Off";
+                button.classList.remove("bg-green-500");
+                button.classList.add("bg-gray-600");
+            }
+        }
+
+        function showSection(section) {
+            document.getElementById('dashboard').classList.add('hidden');
+            document.getElementById('charts').classList.add('hidden');
+            document.getElementById('settings').classList.add('hidden');
+            document.getElementById(section).classList.remove('hidden');
+
+            document.getElementById('dashboard-btn').classList.remove('active');
+            document.getElementById('charts-btn').classList.remove('active');
+            document.getElementById('settings-btn').classList.remove('active');
+
+            document.getElementById('dashboard-btn').classList.add('inactive');
+            document.getElementById('charts-btn').classList.add('inactive');
+            document.getElementById('settings-btn').classList.add('inactive');
+
+            if (section === 'dashboard') {
+                document.getElementById('dashboard-btn').classList.add('active');
+                document.getElementById('dashboard-btn').classList.remove('inactive');
+            } else if (section === 'charts') {
+                document.getElementById('charts-btn').classList.add('active');
+                document.getElementById('charts-btn').classList.remove('inactive');
+            } else if (section === 'settings') {
+                document.getElementById('settings-btn').classList.add('active');
+                document.getElementById('settings-btn').classList.remove('inactive');
+            }
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            document.body.classList.toggle('light-mode');
+        }
+
+        function updateTime() {
+            const now = new Date();
+            const options = { timeZone: 'Asia/Jakarta', hour12: false };
+            const formatter = new Intl.DateTimeFormat('en-GB', {
+                ...options,
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            const formattedDate = formatter.format(now);
+            document.getElementById('last-update').innerText = `Last Update: ${formattedDate} WIB`;
+
+            const hours = now.getHours();
+            let greeting;
+            if (hours < 12) {
+                greeting = "Good morning!";
+            } else if (hours < 18) {
+                greeting = "Good afternoon!";
+            } else {
+                greeting = "Good evening!";
+            }
+            document.getElementById('greeting').innerText = `Hello, ${greeting}`;
+        }
+
+        setInterval(updateTime, 1000);
+    </script>
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
-  <div class="bg-white shadow-lg rounded-lg p-8 w-80 text-center">
-    <h2 class="text-2xl font-bold text-gray-800 mb-6">Kontrol Lampu</h2>
-    
-    <button id="lampuBtn"
-      class="bg-gray-600 text-white py-2 px-4 rounded transition"
-      onclick="toggleLampu()"
-    >Nyalakan</button>
-  </div>
-
-  <script>
-    const ipESP = "http://192.168.166.195"; // Ganti dengan IP ESP8266 kamu
-    let lampuNyala = false;
-
-    function toggleLampu() {
-      const btn = document.getElementById("lampuBtn");
-      const action = lampuNyala ? "off" : "on";
-
-      fetch(`${ipESP}/lampu/${action}`)
-        .then(() => {
-          lampuNyala = !lampuNyala;
-          btn.innerText = lampuNyala ? "Matikan" : "Nyalakan";
-          btn.classList.toggle("bg-gray-600");
-          btn.classList.toggle("bg-green-500");
-        })
-        .catch((err) => {
-          alert("Gagal terhubung ke ESP!");
-          console.error(err);
-        });
-    }
-  </script>
+<body class="bg-gray-900 text-white dark-mode transition" onload="updateTime()">
+    <div class="max-w-4xl mx-auto p-4 transition">
+        <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center">
+                <img alt="User avatar" class="w-12 h-12 rounded-full mr-3" height="50" src="https://storage.googleapis.com/a1aa/image/bWCF4ZLkS82FzgQi_fdHD0NCeC8dJNwno7GJDNZxll8.jpg" width="50"/>
+                <div>
+                    <h1 id="greeting" class="text-lg font-bold">Hello, Good morning!</h1>
+                    <p class="text-sm text-gray-400">Hallo Arkann</p>
+                </div>
+            </div>
+        </div>
+        <div id="dashboard" class="transition">
+            <div class="bg-gray-800 p-4 rounded-lg mb-4 transition">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-green-500 text-sm">Online mode</span>
+                    <span id="last-update" class="text-gray-400 text-sm"></span>
+                </div>
+                <div class="text-center mb-4">
+                    <div class="oval-bg">
+                        <span class="text-gray-400 text-sm">Overall is Good</span>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-center text-sm">
+                    <div>
+                        <span class="block text-cyan-500">7.3</span>
+                        <span class="block text-gray-400">pH</span>
+                    </div>
+                    <div>
+                        <span class="block text-cyan-500">24.1°C</span>
+                        <span class="block text-gray-400">Temp</span>
+                    </div>
+                    <div>
+                        <span class="block text-cyan-500">34.2 mg/l</span>
+                        <span class="block text-gray-400">DO</span>
+                    </div>
+                    <div>
+                        <span class="block text-cyan-500">15 NTU</span>
+                        <span class="block text-gray-400">Turbidity</span>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-800 p-4 rounded-lg mb-4 transition">
+                <div class="flex justify-between mb-4">
+                    <button class="text-cyan-500">Fishpond 1</button>
+                    <button class="text-gray-400">Fishpond 2</button>
+                    <button class="text-gray-400">Fishpond 3</button>
+                    <button class="text-gray-400">Fishpond 4</button>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-gray-700 p-4 rounded-lg text-center transition">
+                        <img alt="Water Drain Pump" class="mx-auto mb-2" height="50" src="https://placehold.co/50x50?text=Cartoon+Water+Drain+Pump" width="50"/>
+                        <span class="block text-gray-400">Water Drain Pump</span>
+                        <button class="mt-2 bg-gray-600 text-white py-1 px-2 rounded-full transition" onclick="toggleButton(this)">Off</button>
+                    </div>
+                    <div class="bg-gray-700 p-4 rounded-lg text-center transition">
+                        <img alt="Water Filling Pump" class="mx-auto mb-2" height="50" src="https://placehold.co/50x50?text=Cartoon+Water+Filling+Pump" width="50"/>
+                        <span class="block text-gray-400">Water Filling Pump</span>
+                        <button class="mt-2 bg-gray-600 text-white py-1 px-2 rounded-full transition" onclick="toggleButton(this)">Off</button>
+                    </div>
+                    <div class="bg-gray-700 p-4 rounded-lg text-center transition">
+                        <img alt="LOW pH Liquid" class="mx-auto mb-2" height="50" src="https://placehold.co/50x50?text=Cartoon+LOW+pH+Liquid" width="50"/>
+                        <span class="block text-gray-400">LOW pH Liquid</span>
+                        <button class="mt-2 bg-gray-600 text-white py-1 px-2 rounded-full transition" onclick="toggleButton(this)">Off</button>
+                    </div>
+                    <div class="bg-gray-700 p-4 rounded-lg text-center transition">
+                        <img alt="HIGH pH Liquid" class="mx-auto mb-2" height="50" src="https://placehold.co/50x50?text=Cartoon+HIGH+pH+Liquid" width="50"/>
+                        <span class="block text-gray-400">HIGH pH Liquid</span>
+                        <button class="mt-2 bg-gray-600 text-white py-1 px-2 rounded-full transition" onclick="toggleButton(this)">Off</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="charts" class="hidden transition">
+            <div class="bg-gray-800 p-4 rounded-lg mb-4 transition">
+                <div class="text-center mb-4">
+                    <h2 class="text-lg font-bold">Charts</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-gray-700 p-4 rounded-lg text-center transition">
+                        <img alt="Chart 1" class="mx-auto mb-2" height="150" src="https://storage.googleapis.com/a1aa/image/s-ntjqUGZgeOp0sGQU5tTkJUNHLSG3BNjuF8RK72hns.jpg" width="150"/>
+                        <span class="block text-gray-400">Chart 1</span>
+                    </div>
+                    <div class="bg-gray-700 p-4 rounded-lg text-center transition">
+                        <img alt="Chart 2" class="mx-auto mb-2" height="150" src="https://storage.googleapis.com/a1aa/image/co5R2v5HRljStsLr918gdiHBC8mNyQ23DabUaG94rz8.jpg" width="150"/>
+                        <span class="block text-gray-400">Chart 2</span>
+                    </div>
+                    <div class="bg-gray-700 p-4 rounded-lg text-center transition">
+                        <img alt="Chart 3" class="mx-auto mb-2" height="150" src="https://storage.googleapis.com/a1aa/image/bf3qQdmvjCZ3PSgGjxAVppFpWY2xBosRhOydAXIOHX0.jpg" width="150"/>
+                        <span class="block text-gray-400">Chart 3</span>
+                    </div>
+                    <div class="bg-gray-700 p-4 rounded-lg text-center transition">
+                        <img alt="Chart 4" class="mx-auto mb-2" height="150" src="https://storage.googleapis.com/a1aa/image/2BlTAcf5FZtpBuTkmZa15rk4Cx9jUn2DGnPQxXWWdlo.jpg" width="150"/>
+                        <span class="block text-gray-400">Chart 4</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="settings" class="hidden transition">
+            <div class="bg-gray-800 p-4 rounded-lg mb-4 transition">
+                <div class="text-center mb-4">
+                    <h2 class="text-lg font-bold">Settings</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-gray-700 p-4 rounded-lg text-center transition">
+                        <i class="fas fa-user-cog text-4xl text-cyan-500 mb-2"></i>
+                        <span class="block text-gray-400">User Settings</span>
+                    </div>
+                    <div class="bg-gray-700 p-4 rounded-lg text-center transition">
+                        <i class="fas fa-bell text-4xl text-cyan-500 mb-2"></i>
+                        <span class="block text-gray-400">Notifications</span>
+                    </div>
+                    <div class="bg-gray-700 p-4 rounded-lg text-center transition">
+                        <i class="fas fa-lock text-4xl text-cyan-500 mb-2"></i>
+                        <span class="block text-gray-400">Privacy</span>
+                    </div>
+                    <div class="bg-gray-700 p-4 rounded-lg text-center transition">
+                        <i class="fas fa-info-circle text-4xl text-cyan-500 mb-2"></i>
+                        <span class="block text-gray-400">About</span>
+                    </div>
+                    <div class="bg-gray-700 p-4 rounded-lg text-center transition">
+                        <i class="fas fa-adjust text-4xl text-cyan-500 mb-2"></i>
+                        <span class="block text-gray-400">Mode</span>
+                        <button class="mt-2 bg-gray-600 text-white py-1 px-2 rounded-full transition" onclick="toggleDarkMode()">Mode</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex justify-between text-center text-sm text-gray-400 transition">
+            <button id="dashboard-btn" class="flex-1 active" onclick="showSection('dashboard')">
+                <i class="fas fa-tachometer-alt text-cyan-500"></i>
+                <span class="block">Dashboard</span>
+            </button>
+            <button id="charts-btn" class="flex-1 inactive" onclick="showSection('charts')">
+                <i class="fas fa-chart-bar"></i>
+                <span class="block">Charts</span>
+            </button>
+            <button id="settings-btn" class="flex-1 inactive" onclick="showSection('settings')">
+                <i class="fas fa-cog"></i>
+                <span class="block">Settings</span>
+            </button>
+        </div>
+    </div>
 </body>
 </html>
