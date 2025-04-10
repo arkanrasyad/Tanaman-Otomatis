@@ -28,6 +28,17 @@
         .transition {
             transition: all 0.3s ease-in-out;
         }
+        .oval-bg {
+            position: relative;
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 9999px;
+        }
+        .oval-bg span {
+            position: relative;
+            z-index: 1;
+        }
     </style>
     <script>
         function toggleButton(button) {
@@ -72,17 +83,45 @@
             document.body.classList.toggle('dark-mode');
             document.body.classList.toggle('light-mode');
         }
+
+        function updateTime() {
+            const now = new Date();
+            const options = { timeZone: 'Asia/Jakarta', hour12: false };
+            const formatter = new Intl.DateTimeFormat('en-GB', {
+                ...options,
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            const formattedDate = formatter.format(now);
+            document.getElementById('last-update').innerText = `Last Update: ${formattedDate} WIB`;
+
+            const hours = now.getHours();
+            let greeting;
+            if (hours < 12) {
+                greeting = "Good morning!";
+            } else if (hours < 18) {
+                greeting = "Good afternoon!";
+            } else {
+                greeting = "Good evening!";
+            }
+            document.getElementById('greeting').innerText = `Hello, ${greeting}`;
+        }
+
+        setInterval(updateTime, 1000);
     </script>
 </head>
-<body class="bg-gray-900 text-white dark-mode transition">
+<body class="bg-gray-900 text-white dark-mode transition" onload="updateTime()">
     <div class="max-w-4xl mx-auto p-4 transition">
         <div class="flex items-center justify-between mb-4">
             <div class="flex items-center">
-               <img alt="User avatar" class="w-12 h-12 rounded-full mr-3" height="50" src="https://your-image-hosting-link.com/avatar-smart-garden.png" width="50"/>
-
+                <img alt="User avatar" class="w-12 h-12 rounded-full mr-3" height="50" src="https://storage.googleapis.com/a1aa/image/bWCF4ZLkS82FzgQi_fdHD0NCeC8dJNwno7GJDNZxll8.jpg" width="50"/>
                 <div>
-                    <h1 class="text-lg font-bold">Hello, Good morning!</h1>
-                    <p class="text-sm text-gray-400">Hello Arkann</p>
+                    <h1 id="greeting" class="text-lg font-bold">Hello, Good morning!</h1>
+                    <p class="text-sm text-gray-400">Hallo Arkann</p>
                 </div>
             </div>
         </div>
@@ -90,10 +129,12 @@
             <div class="bg-gray-800 p-4 rounded-lg mb-4 transition">
                 <div class="flex justify-between items-center mb-2">
                     <span class="text-green-500 text-sm">Online mode</span>
-                    <span class="text-gray-400 text-sm">Last Update: 1 November 2024 - 11:28:01 WIB</span>
+                    <span id="last-update" class="text-gray-400 text-sm"></span>
                 </div>
                 <div class="text-center mb-4">
-                    <span class="text-gray-400 text-sm">Overall is Good</span>
+                    <div class="oval-bg">
+                        <span class="text-gray-400 text-sm">Overall is Good</span>
+                    </div>
                 </div>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-center text-sm">
                     <div>
@@ -123,22 +164,22 @@
                 </div>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div class="bg-gray-700 p-4 rounded-lg text-center transition">
-                        <img alt="Water Drain Pump" class="mx-auto mb-2" height="50" src="https://storage.googleapis.com/a1aa/image/jwvjmuTG5RSjcZGmFzvnY7keB71Xhd3SOv7IKOKMjXM.jpg" width="50"/>
+                        <img alt="Water Drain Pump" class="mx-auto mb-2" height="50" src="https://placehold.co/50x50?text=Cartoon+Water+Drain+Pump" width="50"/>
                         <span class="block text-gray-400">Water Drain Pump</span>
                         <button class="mt-2 bg-gray-600 text-white py-1 px-2 rounded-full transition" onclick="toggleButton(this)">Off</button>
                     </div>
                     <div class="bg-gray-700 p-4 rounded-lg text-center transition">
-                        <img alt="Water Filling Pump" class="mx-auto mb-2" height="50" src="https://storage.googleapis.com/a1aa/image/7A0V_pnxcmeyqhOZeu1CjDKoOlBG_bTN36PsVKZ6eCQ.jpg" width="50"/>
+                        <img alt="Water Filling Pump" class="mx-auto mb-2" height="50" src="https://placehold.co/50x50?text=Cartoon+Water+Filling+Pump" width="50"/>
                         <span class="block text-gray-400">Water Filling Pump</span>
                         <button class="mt-2 bg-gray-600 text-white py-1 px-2 rounded-full transition" onclick="toggleButton(this)">Off</button>
                     </div>
                     <div class="bg-gray-700 p-4 rounded-lg text-center transition">
-                        <img alt="LOW pH Liquid" class="mx-auto mb-2" height="50" src="https://storage.googleapis.com/a1aa/image/Fr2IjStSBkH0n51my9Y3F9Mi32oQHjGKSuqM0vWdOeA.jpg" width="50"/>
+                        <img alt="LOW pH Liquid" class="mx-auto mb-2" height="50" src="https://placehold.co/50x50?text=Cartoon+LOW+pH+Liquid" width="50"/>
                         <span class="block text-gray-400">LOW pH Liquid</span>
                         <button class="mt-2 bg-gray-600 text-white py-1 px-2 rounded-full transition" onclick="toggleButton(this)">Off</button>
                     </div>
                     <div class="bg-gray-700 p-4 rounded-lg text-center transition">
-                        <img alt="HIGH pH Liquid" class="mx-auto mb-2" height="50" src="https://storage.googleapis.com/a1aa/image/yvOJnAyj8dRrm3XpmUs0qjS_rdzAdSfnXhm4PuvBsfw.jpg" width="50"/>
+                        <img alt="HIGH pH Liquid" class="mx-auto mb-2" height="50" src="https://placehold.co/50x50?text=Cartoon+HIGH+pH+Liquid" width="50"/>
                         <span class="block text-gray-400">HIGH pH Liquid</span>
                         <button class="mt-2 bg-gray-600 text-white py-1 px-2 rounded-full transition" onclick="toggleButton(this)">Off</button>
                     </div>
