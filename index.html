@@ -1,74 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Dashboard Smart Kolam</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body class="bg-gray-900 text-white min-h-screen flex flex-col items-center justify-center">
-    <div class="text-center">
-      <h1 class="text-4xl font-bold mb-4">Dashboard Smart Kolam</h1>
-      <div class="grid grid-cols-2 gap-6">
-        <div>
-          <h2 class="text-xl mb-2">Pompa</h2>
-          <button class="mt-2 bg-gray-600 text-white py-1 px-2 rounded-full transition" data-device="pompa">Off</button>
-        </div>
-        <div>
-          <h2 class="text-xl mb-2">Liquid pH</h2>
-          <button class="mt-2 bg-gray-600 text-white py-1 px-2 rounded-full transition" data-device="ph_low">Off</button>
-        </div>
+<head>
+  <meta charset="UTF-8">
+  <title>Kontrol Tanaman Pintar</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js"></script>
+</head>
+<body class="bg-gray-900 text-white flex items-center justify-center min-h-screen">
+
+  <div class="text-center">
+    <h1 class="text-3xl font-bold mb-6">Dashboard Tanaman Pintar</h1>
+
+    <div class="space-y-4">
+      <div>
+        <p class="text-lg mb-2">Pompa</p>
+        <button onclick="setDevice('pompa', true)" class="bg-green-600 px-4 py-2 rounded">ON</button>
+        <button onclick="setDevice('pompa', false)" class="bg-red-600 px-4 py-2 rounded">OFF</button>
+      </div>
+
+      <div>
+        <p class="text-lg mb-2">LED</p>
+        <button onclick="setDevice('led', true)" class="bg-green-600 px-4 py-2 rounded">ON</button>
+        <button onclick="setDevice('led', false)" class="bg-red-600 px-4 py-2 rounded">OFF</button>
       </div>
     </div>
+  </div>
 
-    <script type="module">
-      // Import Firebase module
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-      import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
+  <script>
+    // Konfigurasi Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyCHqr43PAFa1nTqn2YvTs0s_aBZqXZ-TdM",
+      authDomain: "tanaman-pintar.firebaseapp.com",
+      databaseURL: "https://tanaman-pintar-default-rtdb.firebaseio.com",
+      projectId: "tanaman-pintar",
+      storageBucket: "tanaman-pintar.appspot.com",
+      messagingSenderId: "32377243879",
+      appId: "1:32377243879:web:7f8f3d29cb4433f2fb7a42"
+    };
 
-      // Firebase configuration
-      const firebaseConfig = {
-        apiKey: "AIzaSyCHqr43PAFa1nTqn2YvTs0s_aBZqXZ-TdM",
-        authDomain: "tanaman-pintar.firebaseapp.com",
-        databaseURL: "https://tanaman-pintar-default-rtdb.firebaseio.com",
-        projectId: "tanaman-pintar",
-        storageBucket: "tanaman-pintar.appspot.com",
-        messagingSenderId: "32377243879",
-        appId: "1:32377243879:web:7f8fd32gcb4433f2fb7a42",
-        measurementId: "G-JPN8KJ4J9F"
-      };
+    // Inisialisasi Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-      // Inisialisasi Firebase
-      const app = initializeApp(firebaseConfig);
-      const db = getDatabase(app);
+    // Fungsi kirim status ke Firebase
+    function setDevice(device, status) {
+      firebase.database().ref("tanaman1/" + device).set(status)
+        .then(() => console.log(device + " set to " + status))
+        .catch((err) => console.error("Error: ", err));
+    }
+  </script>
 
-      // Fungsi untuk mengubah nilai device di Firebase
-      function toggleDevice(device, status) {
-        set(ref(db, 'tanaman1/' + device), status);
-      }
-
-      // Event click untuk setiap tombol
-      document.querySelectorAll("[data-device]").forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const device = btn.dataset.device;
-          const isOn = btn.innerText === "On";
-          toggleDevice(device, !isOn);
-        });
-      });
-
-      // Sinkronisasi status tombol dari Firebase
-      onValue(ref(db, 'tanaman1'), (snapshot) => {
-        const data = snapshot.val();
-        for (const device in data) {
-          const btn = document.querySelector(`[data-device="${device}"]`);
-          if (btn) {
-            const isOn = data[device];
-            btn.innerText = isOn ? "On" : "Off";
-            btn.classList.toggle("bg-green-500", isOn);
-            btn.classList.toggle("bg-gray-600", !isOn);
-          }
-        }
-      });
-    </script>
-  </body>
+</body>
 </html>
